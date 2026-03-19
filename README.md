@@ -53,40 +53,73 @@ A Dart-based Model Context Protocol (MCP) server for interacting with the Godot 
    export GODOT_PATH=/path/to/your/godot/executable
    ```
 
-5. **Configure your agent:**
-   Add the following to your `opencode` configuration file:
-   ```json
-   {
-     "$schema": "https://opencode.ai/config.json",
-     "mcp": {
-       "Godot MCP": {
-         "type": "local",
-         "command": [
-           "env",
-           "GODOT_PATH=/path/to/godot",
-           "DEBUG=true",
-           "dart",
-           "run",
-           "/path/to/mcp/files/godot/bin/godot.dart"
-         ],
-         "enabled": true
-       }
-     },
-      "lsp": {
-        "gdscript": {
-          "command": [
-            "npx",
-            "opencode-godot-lsp"
-          ],
-          "extensions": [
-            ".gd",
-            ".gdshader"
-          ]
-        }
-      }
+## Client Configuration
+
+This server adheres to the standard Model Context Protocol and can be configured with various MCP-compatible agents. Ensure you use an **absolute path** to the `bin/godot.dart` entrypoint.
+
+### Claude Code
+Add the following to your `mcp.json` configuration file:
+
+```json
+{
+  "mcpServers": {
+    "godot": {
+      "command": "dart",
+      "args": ["run", "/absolute/path/to/godot-mcp-dart/bin/godot.dart"]
     }
-    ```
-    *Note: We recommend using [https://github.com/MasuRii/opencode-godot-lsp](https://github.com/MasuRii/opencode-godot-lsp) for the LSP component.*
+  }
+}
+```
+
+### Google Antigravity
+Configure your Antigravity environment by adding the server to your agent's MCP configuration:
+
+```json
+{
+  "mcp_servers": [
+    {
+      "name": "godot",
+      "command": "dart",
+      "args": ["run", "/absolute/path/to/godot-mcp-dart/bin/godot.dart"]
+    }
+  ]
+}
+```
+
+### OpenCode
+Add the following to your `opencode` configuration file:
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "Godot MCP": {
+      "type": "local",
+      "command": [
+        "env",
+        "GODOT_PATH=/path/to/godot",
+        "DEBUG=true",
+        "dart",
+        "run",
+        "/path/to/mcp/files/godot/bin/godot.dart"
+      ],
+      "enabled": true
+    }
+  },
+  "lsp": {
+    "gdscript": {
+      "command": [
+        "npx",
+        "opencode-godot-lsp"
+      ],
+      "extensions": [
+        ".gd",
+        ".gdshader"
+      ]
+    }
+  }
+}
+```
+*Note: We recommend using [https://github.com/MasuRii/opencode-godot-lsp](https://github.com/MasuRii/opencode-godot-lsp) for the LSP component.*
 
 
 ## Updating
