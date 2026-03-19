@@ -33,7 +33,7 @@ A Dart-based Model Context Protocol (MCP) server for interacting with the Godot 
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/kenthinson/godot-mcp-dart
    cd godot
    ```
 
