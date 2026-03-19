@@ -135,3 +135,6 @@ dart pub get
 - Dart SDK installed.
 - Godot Engine installed.
 - `GODOT_PATH` environment variable set to the Godot executable.
+
+## Known Limitations
+- This MCP server is currently only tested with OpenCode on Linux.
