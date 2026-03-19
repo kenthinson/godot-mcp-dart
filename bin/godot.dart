@@ -22,7 +22,6 @@ class GodotServer {
     _useFields();
   }
 
-  // Define helper methods to use fields if necessary
   void _useFields() {
     print(_operationsScriptPath);
   }
@@ -228,7 +227,6 @@ class GodotServer {
 
     _server.addTool(
       name: 'remove_node',
-
       description: 'Remove / delete a node from the active scene',
       inputSchema: {
         'type': 'object',
@@ -546,6 +544,48 @@ class GodotServer {
           return CallToolResult(
             content: [ImageContent(data: base64Image, mimeType: 'image/png')],
           );
+        } catch (e) {
+          return CallToolResult(
+            content: [TextContent(text: 'Error calling game API: $e')],
+            isError: true,
+          );
+        }
+      },
+    );
+
+    _server.addTool(
+      name: 'call_node_function',
+      description: 'Call a function on a node in the running game',
+      inputSchema: {
+        'type': 'object',
+        'properties': {
+          'nodePath': {
+            'type': 'string',
+            'description': 'Path to the node (e.g., "root/Player")',
+          },
+          'functionName': {
+            'type': 'string',
+            'description': 'Name of the function to call',
+          },
+          'arguments': {
+            'type': 'string',
+            'description': 'JSON stringified dictionary of arguments',
+          },
+        },
+        'required': ['nodePath', 'functionName'],
+      },
+      handler: (arguments) async {
+        try {
+          final uri = Uri.parse('http://localhost:8081/call_node_function')
+              .replace(
+                queryParameters: {
+                  'nodePath': arguments['nodePath'],
+                  'functionName': arguments['functionName'],
+                  'arguments': arguments['arguments'] ?? '{}',
+                },
+              );
+          final response = await http.get(uri);
+          return CallToolResult(content: [TextContent(text: response.body)]);
         } catch (e) {
           return CallToolResult(
             content: [TextContent(text: 'Error calling game API: $e')],

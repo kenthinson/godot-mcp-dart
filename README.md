@@ -28,6 +28,7 @@ A Dart-based Model Context Protocol (MCP) server for interacting with the Godot 
 
 ### Game HTTP Bridge (Real-time Interaction)
 - `get_screenshot`: Capture the running game for vision-capable models.
+- `call_node_function`: Call a function on a node in the running game. Supports JSON arguments; empty `{}` calls without arguments, non-empty dictionaries are passed as a single argument. Returns structured JSON error/success responses.
 
 ## Installation
 
