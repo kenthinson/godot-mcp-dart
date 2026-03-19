@@ -53,18 +53,41 @@ A Dart-based Model Context Protocol (MCP) server for interacting with the Godot 
    export GODOT_PATH=/path/to/your/godot/executable
    ```
 
-5. **Add to your MCP configuration:**
-   Add the following to your agent configuration file:
+5. **Configure your agent:**
+   Add the following to your `opencode` configuration file:
    ```json
    {
-     "mcpServers": {
-       "godot-dart": {
-         "command": "dart",
-         "args": ["/path/to/godot/bin/godot.dart"]
+     "$schema": "https://opencode.ai/config.json",
+     "mcp": {
+       "Godot MCP": {
+         "type": "local",
+         "command": [
+           "env",
+           "GODOT_PATH=/path/to/godot",
+           "DEBUG=true",
+           "dart",
+           "run",
+           "/path/to/mcp/files/godot/bin/godot.dart"
+         ],
+         "enabled": true
        }
-     }
-   }
-   ```
+     },
+      "lsp": {
+        "gdscript": {
+          "command": [
+            "npx",
+            "opencode-godot-lsp"
+          ],
+          "extensions": [
+            ".gd",
+            ".gdshader"
+          ]
+        }
+      }
+    }
+    ```
+    *Note: We recommend using [https://github.com/MasuRii/opencode-godot-lsp](https://github.com/MasuRii/opencode-godot-lsp) for the LSP component.*
+
 
 ## Updating
 
