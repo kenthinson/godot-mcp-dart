@@ -66,13 +66,17 @@ func handle_request(peer: StreamPeerTCP):
 			print("DEBUG: Calling method: ", function_name, " with args: ", arguments)
 			var result = null
 			
-			# Check if arguments is a dictionary and if it's empty.
-			# If it's an empty dictionary, treat it as no arguments.
-			if typeof(arguments) == TYPE_DICTIONARY and arguments.is_empty():
-				result = target_node.call(function_name)
+			# Check if arguments is an array (standard behavior)
+			if typeof(arguments) == TYPE_ARRAY:
+				result = target_node.callv(function_name, arguments)
+			# Fallback: if arguments is a dictionary (legacy behavior)
+			elif typeof(arguments) == TYPE_DICTIONARY:
+				if arguments.is_empty():
+					result = target_node.call(function_name)
+				else:
+					result = target_node.call(function_name, arguments)
+			# Fallback: single argument of another type
 			else:
-				# Pass the dictionary as a single argument.
-				# The target function must be designed to accept 1 argument (the dictionary).
 				result = target_node.call(function_name, arguments)
 			
 			response += JSON.stringify({"status": "success", "result": result})

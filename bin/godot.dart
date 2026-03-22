@@ -555,7 +555,8 @@ class GodotServer {
 
     _server.addTool(
       name: 'call_node_function',
-      description: 'Call a function on a node in the running game',
+      description:
+          'Call a function on a node in the running game. Supports multiple arguments of various types (int, float, string, boolean, arrays, dictionaries).',
       inputSchema: {
         'type': 'object',
         'properties': {
@@ -568,8 +569,9 @@ class GodotServer {
             'description': 'Name of the function to call',
           },
           'arguments': {
-            'type': 'string',
-            'description': 'JSON stringified dictionary of arguments',
+            'type': 'array',
+            'description': 'List of arguments to pass to the function',
+            'items': {},
           },
         },
         'required': ['nodePath', 'functionName'],
@@ -581,7 +583,7 @@ class GodotServer {
                 queryParameters: {
                   'nodePath': arguments['nodePath'],
                   'functionName': arguments['functionName'],
-                  'arguments': arguments['arguments'] ?? '{}',
+                  'arguments': jsonEncode(arguments['arguments'] ?? []),
                 },
               );
           final response = await http.get(uri);
