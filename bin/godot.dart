@@ -29,7 +29,8 @@ class GodotServer {
   void _setupToolHandlers() {
     _server.addTool(
       name: 'run_project',
-      description: 'Run the Godot project',
+      description:
+          'Run the Godot project. Wait for the project to finish starting up before calling the next tool.',
       inputSchema: {
         'type': 'object',
         'properties': {
