@@ -256,6 +256,21 @@ func handle_request(peer: StreamPeerTCP):
 			response += JSON.stringify({"nodes": node_list})
 		else:
 			response += JSON.stringify({"status": "error", "message": "No scene open"})
+
+	elif "GET /get_selected_text" in request:
+		var editor_interface = EditorInterface.get_script_editor()
+		var current_editor = editor_interface.get_current_editor()
+		
+		if current_editor:
+			var code_edit = current_editor.get_base_editor()
+			
+			if code_edit and code_edit is CodeEdit:
+				var selected_text = code_edit.get_selected_text()
+				response += JSON.stringify({"text": selected_text})
+			else:
+				response += JSON.stringify({"status": "error", "message": "No text editor active"})
+		else:
+			response += JSON.stringify({"status": "error", "message": "Script Editor not open"})
 	
 	peer.put_data(response.to_utf8_buffer())
 	peer.disconnect_from_host()

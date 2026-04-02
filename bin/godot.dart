@@ -149,6 +149,26 @@ class GodotServer {
     );
 
     _server.addTool(
+      name: 'get_selected_text',
+      description:
+          'Get the currently selected text from the active CodeEdit widget in the Godot Editor',
+      inputSchema: {'type': 'object', 'properties': {}, 'required': []},
+      handler: (arguments) async {
+        try {
+          final response = await http.get(
+            Uri.parse('http://localhost:8080/get_selected_text'),
+          );
+          return CallToolResult(content: [TextContent(text: response.body)]);
+        } catch (e) {
+          return CallToolResult(
+            content: [TextContent(text: 'Error calling editor API: $e')],
+            isError: true,
+          );
+        }
+      },
+    );
+
+    _server.addTool(
       name: 'launch_editor',
       description: 'Launch the Godot editor if not already running',
       inputSchema: {
