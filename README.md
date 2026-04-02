@@ -15,7 +15,7 @@ A Dart-based Model Context Protocol (MCP) server for interacting with the Godot 
 ### Editor HTTP Bridge (Real-time Interaction)
 - `list_scene_nodes`: List all nodes in the active scene tree.
 - `get_selected_node`: Get currently selected node(s) in the Editor.
-- `get_selected_text`: Get the currently selected text from the active CodeEdit widget in the Godot Editor.
+- `get_selected_text`: Get the currently selected text and file path from the active CodeEdit widget in the Godot Editor. Returns JSON with `text` and `file_path` (filesystem path).
 - `create_scene`: Create and open a new scene.
 - `add_node`: Add a node as a child of another node.
 - `remove_node`: Remove / delete a node from the scene.

@@ -258,15 +258,21 @@ func handle_request(peer: StreamPeerTCP):
 			response += JSON.stringify({"status": "error", "message": "No scene open"})
 
 	elif "GET /get_selected_text" in request:
-		var editor_interface = EditorInterface.get_script_editor()
-		var current_editor = editor_interface.get_current_editor()
+		var script_editor = EditorInterface.get_script_editor()
+		var current_editor = script_editor.get_current_editor()
 		
 		if current_editor:
 			var code_edit = current_editor.get_base_editor()
+			var file_path = ""
+			
+			# Get the currently edited script's path via ScriptEditor
+			var current_script = script_editor.get_current_script()
+			if current_script and current_script.resource_path != "":
+				file_path = ProjectSettings.globalize_path(current_script.resource_path)
 			
 			if code_edit and code_edit is CodeEdit:
 				var selected_text = code_edit.get_selected_text()
-				response += JSON.stringify({"text": selected_text})
+				response += JSON.stringify({"text": selected_text, "file_path": file_path})
 			else:
 				response += JSON.stringify({"status": "error", "message": "No text editor active"})
 		else:
